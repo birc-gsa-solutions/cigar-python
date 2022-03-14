@@ -83,6 +83,7 @@ def align(p: str, q: str, edits: str) -> tuple[str, str]:
     # If the strings are valid input, all of q will be aligned.
     return local_align(p, q, 0, edits)
 
+
 def edit_dist(p: str, x: str, i: int, edits: str) -> int:
     """Get the distance between p and the string that starts at x[i:]
     using the edits.
@@ -99,4 +100,16 @@ def edit_dist(p: str, x: str, i: int, edits: str) -> int:
     >>> edit_dist("accaaagta", "cgacaaatgtcca", 2, "MDMMIMMMMIIM")
     5
     """
-    return -1
+    j, dist = 0, 0
+    for op in edits:
+        if op == 'I':
+            dist += 1
+            i += 1
+        elif op == 'D':
+            dist += 1
+            j += 1
+        else:
+            dist += (x[i] != p[j])
+            i += 1
+            j += 1
+    return dist
